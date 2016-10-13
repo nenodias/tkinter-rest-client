@@ -15,6 +15,7 @@ class Rest(ttk.Frame):
     DELETE = 'DELETE'
     OPTIONS = 'OPTIONS'
     TRACE = 'TRACE'
+    HEAD = 'HEAD'
 
     def __init__(self, root, *args, **kwargs):
         super(Rest, self).__init__(*args, **kwargs)
@@ -44,7 +45,7 @@ class Rest(ttk.Frame):
         self.metodo = tkinter.StringVar()
         self.metodos_combo = ttk.Combobox(self.frame_url, textvariable=self.metodo, width=8)
         self.metodos_combo.bind("<<ComboboxSelected>>", self.metodo_select)
-        self.metodos_combo['values'] = (Rest.GET, Rest.POST,Rest.PUT, Rest.DELETE, Rest.OPTIONS, Rest.TRACE)
+        self.metodos_combo['values'] = (Rest.GET, Rest.POST,Rest.PUT, Rest.DELETE, Rest.OPTIONS, Rest.TRACE, Rest.HEAD)
         self.metodos_combo.pack(side=tkinter.LEFT)
         self.metodos_combo.state(['readonly'])
         self.metodo.set( self.metodos_combo['values'][0] )
@@ -166,6 +167,8 @@ class Rest(ttk.Frame):
                 resposta = r.options(self.url.get(), headers=headers)
             elif metodo == Rest.TRACE:
                 resposta = r.trace(self.url.get(), headers=headers)
+            elif metodo == Rest.HEAD:
+                resposta = r.head(self.url.get(), headers=headers)
         except Exception as ex:
             print(ex)
             resposta = ex.message
@@ -209,6 +212,12 @@ class Rest(ttk.Frame):
                     self.metodo.set( Rest.PUT )
                 elif arquivo_json['method'] == Rest.DELETE:
                     self.metodo.set( Rest.DELETE )
+                elif arquivo_json['method'] == Rest.OPTIONS:
+                    self.metodo.set( Rest.OPTIONS )
+                elif arquivo_json['method'] == Rest.TRACE:
+                    self.metodo.set( Rest.TRACE )
+                elif arquivo_json['method'] == Rest.HEAD:
+                    self.metodo.set( Rest.HEAD )
             self.metodo_select()
             if arquivo_json['data']:
                 self.body.delete(0.0,tkinter.END)
