@@ -13,6 +13,8 @@ class Rest(ttk.Frame):
     POST = 'POST'
     PUT = 'PUT'
     DELETE = 'DELETE'
+    OPTIONS = 'OPTIONS'
+    TRACE = 'TRACE'
 
     def __init__(self, root, *args, **kwargs):
         super(Rest, self).__init__(*args, *kwargs)
@@ -42,7 +44,7 @@ class Rest(ttk.Frame):
         self.metodo = tkinter.StringVar()
         self.metodos_combo = ttk.Combobox(self.frame_url, textvariable=self.metodo, width=8)
         self.metodos_combo.bind("<<ComboboxSelected>>", self.metodo_select)
-        self.metodos_combo['values'] = (Rest.GET, Rest.POST,Rest.PUT, Rest.DELETE)
+        self.metodos_combo['values'] = (Rest.GET, Rest.POST,Rest.PUT, Rest.DELETE, Rest.OPTIONS, Rest.TRACE)
         self.metodos_combo.pack(side=tkinter.LEFT)
         self.metodos_combo.state(['readonly'])
         self.metodo.set( self.metodos_combo['values'][0] )
@@ -160,6 +162,10 @@ class Rest(ttk.Frame):
                 resposta = r.put(self.url.get(), headers=headers, data=data)
             elif metodo == Rest.DELETE:
                 resposta = r.delete(self.url.get(), headers=headers)
+            elif metodo == Rest.OPTIONS:
+                resposta = r.options(self.url.get(), headers=headers)
+            elif metodo == Rest.TRACE:
+                resposta = r.trace(self.url.get(), headers=headers)
         except Exception as ex:
             print(ex)
             resposta = ex.message
