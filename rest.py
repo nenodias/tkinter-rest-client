@@ -17,7 +17,7 @@ class Rest(ttk.Frame):
     TRACE = 'TRACE'
 
     def __init__(self, root, *args, **kwargs):
-        super(Rest, self).__init__(*args, *kwargs)
+        super(Rest, self).__init__(*args, **kwargs)
         self.pack()
 
         menubar = tkinter.Menu(root)
